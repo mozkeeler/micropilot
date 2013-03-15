@@ -21,6 +21,7 @@ define HELPDOC
   docs      - create coverage and api docs, place in `gh-pages`
   version   - print micropilot version (according to `package.json`)
   fixtures  - builds xpis for testing
+  test-shell - bash related (non-js) tests.
   help      - this help.
 
 
@@ -56,7 +57,11 @@ cover:  fixtures
 	    --escodegen-options '{"moz":{"starlessGenerator":true,"parenthesizedComprehensionBlock":true}}' "$$file"; \
 	     done )
 
-test:  cover
+
+test-shell:
+	cd $(TOP)/test && bash test-persist-over-restarts.sh
+
+test:  test-shell cover
 	cd $(TOP) &&\
 	(cfx test $(OPTS) --pkgdir=fakey -b /Applications/Firefox$(FOX).app/Contents/MacOS/firefox ;\
 	node coverreport.js < coverstats-micropilot@ux.mozilla.org.json  > gh-pages/coverreport.html )
